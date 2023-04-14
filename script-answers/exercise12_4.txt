@@ -1,0 +1,7 @@
+#!/bin/bash
+docker start serene_hugle 
+docker exec -it serene_hugle /bin/bash
+apt-get -y install curl
+curl -sL https://deb.nodesource.com/setup_16.x | bash
+apt install -y nodejs
+node /usr/src/app/index.js

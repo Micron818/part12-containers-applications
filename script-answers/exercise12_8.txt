@@ -1,0 +1,10 @@
+docker exec -it todo-backend-mongo-1 bash
+mongosh --username root --password example
+show dbs
+use todo
+show collections
+db.todos.find()
+db.todos.insertOne({text:'demo-1',done:true})
+db.todos.find({text:'demo-1'})
+exit
+exit

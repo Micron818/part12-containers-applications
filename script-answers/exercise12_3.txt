@@ -1,0 +1,5 @@
+#!/bin/bash
+docker start -i hopeful_clarke
+apt-get update
+apt-get -y install nano
+nano /usr/src/app/index.js

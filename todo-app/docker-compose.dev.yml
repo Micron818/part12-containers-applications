@@ -1,0 +1,43 @@
+services:
+  todo-frontend:
+    image: todo-frontend-dev
+    build:
+      context: todo-frontend 
+      dockerfile: dev.Dockerfile
+    networks:
+      - todo-backend
+      - default
+    environment:
+      # resolve ws stocket error
+      - WDS_SOCKET_PORT=3002
+
+      # can not set with inside service, because the app run in browser, not in container!
+      # - REACT_APP_BACKEND_URL=http://todo-backend:3000
+
+      # run with frontend directly
+      # - REACT_APP_BACKEND_URL=http://192.168.56.2:3001
+      
+      # run with aginx reverse proxy
+      - REACT_APP_BACKEND_URL=http://192.168.56.2:8080/api/
+
+    ports:
+      - 3002:3000
+    container_name: todo-frontend-dev
+
+  nginx:
+    image: nginx:1.21.6
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - todo-frontend
+    #for debug
+    # command: [nginx-debug, '-g', 'daemon off;'] 
+
+networks:
+  todo-backend:
+    name: todo-backend_default
+    external: true
+    
